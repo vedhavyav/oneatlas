@@ -1,0 +1,111 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum OrgRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum IntegrationProvider {
+  SLACK
+  GMAIL
+  GOOGLE_SHEETS
+  NOTION
+  WEBHOOK
+}
+
+model User {
+  id        String      @id @default(uuid())
+  email     String      @unique
+  name      String?
+  clerkId   String?     @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  memberships OrgMember[]
+  auditLogs   AuditLog[]
+}
+
+model Organization {
+  id           String        @id @default(uuid())
+  name         String
+  slug         String        @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  members      OrgMember[]
+  projects     Project[]
+  integrations Integration[]
+  auditLogs    AuditLog[]
+}
+
+model OrgMember {
+  id             String       @id @default(uuid())
+  organizationId String
+  userId         String
+  role           OrgRole      @default(MEMBER)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+}
+
+model Project {
+  id             String       @id @default(uuid())
+  name           String
+  slug           String       @unique // subdomain prefix (e.g. "crm" in crm.oneatlas.app)
+  description    String?
+  organizationId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  deployments    Deployment[]
+}
+
+model Deployment {
+  id          String   @id @default(uuid())
+  projectId   String
+  version     Int      @default(1)
+  appMetadata Json     // JSON matching the AppMetadata schema
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Integration {
+  id             String              @id @default(uuid())
+  organizationId String
+  provider       IntegrationProvider
+  credentials    Json                // OAuth credentials, keys, webhooks (encrypted or structure-stored)
+  active         Boolean             @default(true)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model WorkflowExecution {
+  id         String   @id @default(uuid())
+  workflowId String   // ID of workflow in AppMetadata
+  status     String   // "PENDING" | "RUNNING" | "COMPLETED" | "FAILED"
+  logs       Json     // array of execution step logs
+  createdAt  DateTime @default(now())
+}
+
+model AuditLog {
+  id             String       @id @default(uuid())
+  organizationId String
+  userId         String?
+  action         String       // e.g. "DEPLOY_APP", "CREATE_ROW", "TRIGGER_WORKFLOW"
+  resource       String       // e.g. "Project:crm", "Table:leads"
+  details        Json?        // additional key-value properties
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+}

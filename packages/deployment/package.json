@@ -1,0 +1,19 @@
+{
+  "name": "@oneatlas/deployment",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@oneatlas/metadata": "*",
+    "@oneatlas/db": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  }
+}
