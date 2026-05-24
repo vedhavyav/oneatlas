@@ -37,6 +37,9 @@ export default async function RuntimeLandingPage() {
       {/* Top Navbar */}
       <header className="border-b border-white/5 bg-slate-950/40 backdrop-blur px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
+          <a href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition mr-1">
+            <DynamicIcon name="ArrowLeft" size={16} />
+          </a>
           <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
             <span className="font-extrabold text-white text-base">R</span>
           </div>

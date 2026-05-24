@@ -189,6 +189,12 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
       {/* Sidebar Navigation */}
       <aside className="w-64 border-r border-white/5 bg-slate-950/20 flex flex-col justify-between">
         <div className="flex flex-col gap-6 p-6">
+          {/* Exit to Dashboard link */}
+          <a href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"} className="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition group border-b border-white/5 pb-4">
+            <DynamicIcon name="ArrowLeft" size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+            <span>Exit to Dashboard</span>
+          </a>
+
           {/* App title */}
           <div className="flex items-center gap-2 pb-4 border-b border-white/5">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: appMetadata.themeColor }} />
