@@ -2,6 +2,8 @@ import React from 'react';
 import { prisma } from '@oneatlas/db';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
 
+export const runtime = 'edge';
+
 // Auto-seed function to guarantee active workspace records exist on first run
 async function bootstrapAndGetProjects() {
   try {

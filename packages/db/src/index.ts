@@ -1,6 +1,23 @@
 import { PrismaClient } from '@prisma/client';
+import { Pool } from '@neondatabase/serverless';
+import { PrismaNeon } from '@prisma/adapter-neon';
 
-export const prisma = new PrismaClient();
+let prismaInstance: PrismaClient;
+const connectionString = process.env.DATABASE_URL || '';
+
+if (
+  process.env.NEXT_RUNTIME === 'edge' ||
+  typeof (globalThis as any).EdgeRuntime !== 'undefined' ||
+  process.env.CLOUDFLARE_PAGES === '1'
+) {
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaNeon(pool);
+  prismaInstance = new PrismaClient({ adapter });
+} else {
+  prismaInstance = new PrismaClient();
+}
+
+export const prisma = prismaInstance;
 
 // Export the Prisma namespaces for type safety
 export * from '@prisma/client';
