@@ -2,6 +2,7 @@ import React from 'react';
 import { headers } from 'next/headers';
 import { prisma } from '@oneatlas/db';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
+import { getSiblingUrls } from '@oneatlas/metadata';
 
 export const runtime = 'edge';
 
@@ -30,14 +31,15 @@ export default async function RuntimeLandingPage() {
   const protocol = host.includes('localhost') ? 'http:' : 'https:';
   const isPagesDev = host.includes('pages.dev');
 
-  const builderUrl = process.env.NEXT_PUBLIC_BUILDER_URL || 'http://localhost:3000';
+  const siblingUrls = getSiblingUrls(host);
+  const builderUrl = siblingUrls.builder;
 
   return (
     <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col justify-between">
       {/* Top Navbar */}
       <header className="border-b border-white/5 bg-slate-950/40 backdrop-blur px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <a href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition mr-1">
+          <a href={siblingUrls.dashboard} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition mr-1">
             <DynamicIcon name="ArrowLeft" size={16} />
           </a>
           <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">

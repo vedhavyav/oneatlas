@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
-import { AppMetadata } from '@oneatlas/metadata';
+import { AppMetadata, getSiblingUrls } from '@oneatlas/metadata';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -10,6 +10,18 @@ interface ChatMessage {
 }
 
 export default function BuilderPage() {
+  const [siblingUrls, setSiblingUrls] = useState({
+    dashboard: 'http://localhost:3001',
+    builder: 'http://localhost:3000',
+    runtime: 'http://localhost:3002'
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setSiblingUrls(getSiblingUrls(window.location.host));
+    }
+  }, []);
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -150,7 +162,7 @@ export default function BuilderPage() {
       {/* Top Header */}
       <header className="border-b border-white/5 bg-slate-950/40 backdrop-blur px-6 py-3.5 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
-          <a href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition">
+          <a href={siblingUrls.dashboard} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition">
             <DynamicIcon name="ArrowLeft" size={16} />
           </a>
           <span className="font-bold tracking-tight text-slate-300">

@@ -52,8 +52,9 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Trigger Deployment & Dynamic DB Sync
+    const builderHost = req.headers.get('host');
     const deployer = new DeploymentManager();
-    const result = await deployer.deployProject(project.id, appMetadata);
+    const result = await deployer.deployProject(project.id, appMetadata, builderHost);
 
     return NextResponse.json({
       success: true,

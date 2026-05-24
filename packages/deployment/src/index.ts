@@ -1,5 +1,5 @@
 import { prisma, syncTenantSchema } from '@oneatlas/db';
-import { AppMetadata } from '@oneatlas/metadata';
+import { AppMetadata, getSiblingUrls } from '@oneatlas/metadata';
 
 export interface DeploymentResult {
   deploymentId: string;
@@ -14,7 +14,7 @@ export class DeploymentManager {
   /**
    * Deploys an application version by saving its metadata and syncing its Postgres tables.
    */
-  async deployProject(projectId: string, metadata: AppMetadata): Promise<DeploymentResult> {
+  async deployProject(projectId: string, metadata: AppMetadata, builderHost?: string | null): Promise<DeploymentResult> {
     // 1. Fetch project details
     const project = await prisma.project.findUnique({
       where: { id: projectId }
@@ -52,7 +52,8 @@ export class DeploymentManager {
     });
 
     // Generate url (e.g. crm.localhost:3002 or path fallback for pages.dev)
-    const runtimeUrl = process.env.NEXT_PUBLIC_RUNTIME_URL || 'http://localhost:3002';
+    const siblingUrls = getSiblingUrls(builderHost);
+    const runtimeUrl = siblingUrls.runtime;
     const parsedUrl = new URL(runtimeUrl);
     const isPagesDev = parsedUrl.host.includes('pages.dev');
     const appUrl = isPagesDev

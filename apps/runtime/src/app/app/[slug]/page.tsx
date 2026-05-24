@@ -2,12 +2,24 @@
 
 import React, { useState, useEffect } from 'react';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
-import { AppMetadata } from '@oneatlas/metadata';
+import { AppMetadata, getSiblingUrls } from '@oneatlas/metadata';
 
 export const runtime = 'edge';
 
 export default function RuntimeAppPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
+
+  const [siblingUrls, setSiblingUrls] = useState({
+    dashboard: 'http://localhost:3001',
+    builder: 'http://localhost:3000',
+    runtime: 'http://localhost:3002'
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setSiblingUrls(getSiblingUrls(window.location.host));
+    }
+  }, []);
 
   const [loading, setLoading] = useState(true);
   const [appMetadata, setAppMetadata] = useState<AppMetadata | null>(null);
@@ -172,7 +184,7 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
         <p className="text-xs text-slate-400 mt-1 max-w-sm leading-relaxed">
           {loadError || "This subdomain does not have an active deployment. Open the builder to deploy your application."}
         </p>
-        <a href={process.env.NEXT_PUBLIC_BUILDER_URL || "http://localhost:3000"} className="mt-6">
+        <a href={siblingUrls.builder} className="mt-6">
           <ModernButton variant="secondary" className="py-2 text-xs">
             Open App Builder
           </ModernButton>
@@ -190,7 +202,7 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
       <aside className="w-64 border-r border-white/5 bg-slate-950/20 flex flex-col justify-between">
         <div className="flex flex-col gap-6 p-6">
           {/* Exit to Dashboard link */}
-          <a href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"} className="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition group border-b border-white/5 pb-4">
+          <a href={siblingUrls.dashboard} className="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition group border-b border-white/5 pb-4">
             <DynamicIcon name="ArrowLeft" size={14} className="group-hover:-translate-x-0.5 transition-transform" />
             <span>Exit to Dashboard</span>
           </a>
