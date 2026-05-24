@@ -13,7 +13,7 @@ export async function executeInSchema<T>(
   callback: (tx: any) => Promise<T>
 ): Promise<T> {
   // We use standard connection, setting search_path inside transaction ensures it applies to subsequent statements
-  return await prisma.$transaction(async (tx) => {
+  return await prisma.$transaction(async (tx: any) => {
     await tx.$executeRawUnsafe(`SET LOCAL search_path TO "${schema}", public;`);
     return await callback(tx);
   });
