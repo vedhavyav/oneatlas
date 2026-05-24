@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
 import { AppMetadata } from '@oneatlas/metadata';
 
+export const runtime = 'edge';
+
 export default function RuntimeAppPage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
 
