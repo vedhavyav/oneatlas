@@ -3,6 +3,8 @@ import { prisma, executeInSchema } from '@oneatlas/db';
 import { DeploymentManager } from '@oneatlas/deployment';
 import { WorkflowEngine } from '@oneatlas/workflows';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const { slug, table, data } = await req.json();

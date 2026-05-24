@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma, executeInSchema } from '@oneatlas/db';
 import { DeploymentManager } from '@oneatlas/deployment';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const { slug, table } = await req.json();
