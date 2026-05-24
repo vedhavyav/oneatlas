@@ -150,7 +150,7 @@ export default function BuilderPage() {
       {/* Top Header */}
       <header className="border-b border-white/5 bg-slate-950/40 backdrop-blur px-6 py-3.5 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
-          <a href="http://localhost:3001" className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition">
+          <a href={process.env.NEXT_PUBLIC_DASHBOARD_URL || "http://localhost:3001"} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition">
             <DynamicIcon name="ArrowLeft" size={16} />
           </a>
           <span className="font-bold tracking-tight text-slate-300">

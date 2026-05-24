@@ -172,7 +172,7 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
         <p className="text-xs text-slate-400 mt-1 max-w-sm leading-relaxed">
           {loadError || "This subdomain does not have an active deployment. Open the builder to deploy your application."}
         </p>
-        <a href="http://localhost:3000" className="mt-6">
+        <a href={process.env.NEXT_PUBLIC_BUILDER_URL || "http://localhost:3000"} className="mt-6">
           <ModernButton variant="secondary" className="py-2 text-xs">
             Open App Builder
           </ModernButton>

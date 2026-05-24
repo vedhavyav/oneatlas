@@ -51,10 +51,13 @@ export class DeploymentManager {
       }
     });
 
-    // Generate url (e.g. crm.localhost:3000 or custom subdomains)
+    // Generate url (e.g. crm.localhost:3002 or path fallback for pages.dev)
     const runtimeUrl = process.env.NEXT_PUBLIC_RUNTIME_URL || 'http://localhost:3002';
     const parsedUrl = new URL(runtimeUrl);
-    const appUrl = `${parsedUrl.protocol}//${project.slug}.${parsedUrl.host}`;
+    const isPagesDev = parsedUrl.host.includes('pages.dev');
+    const appUrl = isPagesDev
+      ? `${parsedUrl.protocol}//${parsedUrl.host}/app/${project.slug}`
+      : `${parsedUrl.protocol}//${project.slug}.${parsedUrl.host}`;
 
     // Log the audit log
     await prisma.auditLog.create({
