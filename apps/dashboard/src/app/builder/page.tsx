@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
 import { AppMetadata } from '@oneatlas/metadata';
 
+export const runtime = 'edge';
+
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
