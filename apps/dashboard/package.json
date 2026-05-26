@@ -13,6 +13,8 @@
     "@oneatlas/db": "*",
     "@oneatlas/ui": "*",
     "@oneatlas/deployment": "*",
+    "@oneatlas/workflows": "*",
+    "@oneatlas/metadata": "*",
     "@oneatlas/integrations": "*",
     "next": "^14.1.0",
     "react": "^18.2.0",

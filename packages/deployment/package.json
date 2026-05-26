@@ -9,8 +9,9 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "@oneatlas/db": "*",
     "@oneatlas/metadata": "*",
-    "@oneatlas/db": "*"
+    "@oneatlas/ui": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.0",
