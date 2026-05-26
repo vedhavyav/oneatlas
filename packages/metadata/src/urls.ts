@@ -27,9 +27,18 @@ export function getSiblingUrls(currentHost?: string | null): SiblingUrls {
         basePrefix = hostname.replace('.pages.dev', '');
       }
 
-      dashboard = `https://${basePrefix}.pages.dev`;
-      builder = `https://${basePrefix}-builder.pages.dev`;
-      runtime = `https://${basePrefix}-runtime.pages.dev`;
+      // Check if this is the oneatlas tenant/project family
+      const cleanPrefix = basePrefix.split('.').pop() || '';
+      if (cleanPrefix === 'oneatlas' || cleanPrefix === 'oneatlas-7w6') {
+        const previewPart = basePrefix.includes('.') ? basePrefix.substring(0, basePrefix.lastIndexOf('.') + 1) : '';
+        dashboard = `https://${previewPart}oneatlas-7w6.pages.dev`;
+        builder = `https://${previewPart}oneatlas-builder.pages.dev`;
+        runtime = `https://${previewPart}oneatlas-runtime.pages.dev`;
+      } else {
+        dashboard = `https://${basePrefix}.pages.dev`;
+        builder = `https://${basePrefix}-builder.pages.dev`;
+        runtime = `https://${basePrefix}-runtime.pages.dev`;
+      }
     }
   }
 
