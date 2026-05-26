@@ -157,23 +157,23 @@ export default function BuilderPage() {
   };
 
   return (
-    <div className="h-screen bg-[#07090e] text-slate-100 flex flex-col overflow-hidden">
+    <div className="h-screen bg-bg-primary text-text-primary flex flex-col overflow-hidden transition-subtle">
       
       {/* Top Header */}
-      <header className="border-b border-white/5 bg-slate-950/40 backdrop-blur px-6 py-3.5 flex items-center justify-between z-10">
+      <header className="border-b border-border-color bg-bg-secondary px-6 py-3.5 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
-          <a href={siblingUrls.dashboard} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition">
+          <a href={siblingUrls.dashboard} className="h-8 w-8 rounded-lg bg-bg-primary border border-border-color flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-primary shadow-subtle transition-subtle">
             <DynamicIcon name="ArrowLeft" size={16} />
           </a>
-          <span className="font-bold tracking-tight text-slate-300">
-            OneAtlas<span className="text-blue-500">.dev</span> Builder
+          <span className="font-bold tracking-tight text-text-primary">
+            OneAtlas<span className="text-accent-primary">.dev</span> Builder
           </span>
         </div>
 
         {metadata && (
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-            <span className="text-xs font-semibold text-slate-400">Workspace App: <strong className="text-white">{metadata.name}</strong></span>
+            <span className="text-xs font-semibold text-text-secondary">Workspace App: <strong className="text-text-primary">{metadata.name}</strong></span>
           </div>
         )}
       </header>
@@ -182,18 +182,18 @@ export default function BuilderPage() {
       <div className="flex-1 flex overflow-hidden">
         
         {/* Left Side: conversational chatbot */}
-        <div className="w-[450px] border-r border-white/5 flex flex-col bg-slate-950/20">
+        <div className="w-[450px] border-r border-border-color flex flex-col bg-bg-secondary">
           
           {/* Chat Messages */}
           <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
             {messages.length === 0 ? (
               <div className="flex flex-col gap-6 my-auto text-center px-4">
-                <div className="mx-auto h-12 w-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center">
+                <div className="mx-auto h-12 w-12 rounded-2xl bg-accent-primary/10 border border-accent-primary/20 text-accent-primary flex items-center justify-center shadow-subtle">
                   <DynamicIcon name="Sparkles" size={24} />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Design your internal operations tool</h3>
-                  <p className="text-xs text-slate-400 mt-1">Prompt Gemini to construct fields, charts, tables, and workflows instantly.</p>
+                  <h3 className="text-base font-bold text-text-primary">Design your internal operations tool</h3>
+                  <p className="text-xs text-text-secondary mt-1">Prompt Gemini to construct fields, charts, tables, and workflows instantly.</p>
                 </div>
                 
                 <div className="flex flex-col gap-2 mt-2">
@@ -205,7 +205,7 @@ export default function BuilderPage() {
                     <button
                       key={tpl}
                       onClick={() => handleGenerate(tpl)}
-                      className="text-left text-xs p-3 rounded-xl bg-white/5 border border-white/5 text-slate-400 hover:text-white hover:border-blue-500/30 transition duration-200"
+                      className="text-left text-xs p-3 rounded-xl bg-bg-primary border border-border-color text-text-secondary hover:text-text-primary hover:border-accent-primary/30 transition-subtle shadow-subtle"
                     >
                       {tpl}
                     </button>
@@ -221,8 +221,8 @@ export default function BuilderPage() {
                   <div
                     className={`max-w-[85%] rounded-2xl p-4 text-xs leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-blue-600 text-white rounded-tr-none'
-                        : 'bg-white/5 border border-white/5 text-slate-200 rounded-tl-none'
+                        ? 'bg-accent-primary text-white rounded-tr-none shadow-subtle'
+                        : 'bg-bg-primary border border-border-color text-text-primary rounded-tl-none shadow-subtle'
                     }`}
                   >
                     {msg.content}
@@ -233,11 +233,11 @@ export default function BuilderPage() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white/5 border border-white/5 rounded-2xl rounded-tl-none p-4 max-w-[85%] flex items-center gap-3">
-                  <span className="h-2 w-2 rounded-full bg-blue-500 animate-bounce" />
-                  <span className="h-2 w-2 rounded-full bg-blue-500 animate-bounce [animation-delay:0.2s]" />
-                  <span className="h-2 w-2 rounded-full bg-blue-500 animate-bounce [animation-delay:0.4s]" />
-                  <span className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Gemini compiles code...</span>
+                <div className="bg-bg-primary border border-border-color rounded-2xl rounded-tl-none p-4 max-w-[85%] flex items-center gap-3 shadow-subtle">
+                  <span className="h-2 w-2 rounded-full bg-accent-primary animate-bounce" />
+                  <span className="h-2 w-2 rounded-full bg-accent-primary animate-bounce [animation-delay:0.2s]" />
+                  <span className="h-2 w-2 rounded-full bg-accent-primary animate-bounce [animation-delay:0.4s]" />
+                  <span className="text-[10px] text-text-secondary font-semibold tracking-wider uppercase">Gemini compiles code...</span>
                 </div>
               </div>
             )}
@@ -246,9 +246,9 @@ export default function BuilderPage() {
 
           {/* Deployment controls block */}
           {metadata && !deployResult && (
-            <div className="p-6 border-t border-white/5 bg-slate-950/40 flex flex-col gap-4">
-              <h3 className="text-xs font-bold text-white flex items-center gap-2">
-                <DynamicIcon name="Rocket" size={14} className="text-blue-500" />
+            <div className="p-6 border-t border-border-color bg-bg-secondary flex flex-col gap-4">
+              <h3 className="text-xs font-bold text-text-primary flex items-center gap-2">
+                <DynamicIcon name="Rocket" size={14} className="text-accent-primary" />
                 <span>Ready to deploy?</span>
               </h3>
               
@@ -259,15 +259,15 @@ export default function BuilderPage() {
                     placeholder="subdomain"
                     value={subdomain}
                     onChange={(e) => setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                    className="w-full text-xs bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full text-xs bg-bg-primary border border-border-color rounded-xl px-3 py-2 text-text-primary focus:outline-none focus:border-accent-primary shadow-subtle"
                   />
-                  <span className="absolute right-3 top-2 text-[10px] font-bold text-slate-500">.oneatlas.app</span>
+                  <span className="absolute right-3 top-2 text-[10px] font-bold text-text-muted">.oneatlas.app</span>
                 </div>
 
                 <ModernButton
                   disabled={deploying || !subdomain}
                   onClick={handleDeploy}
-                  className="py-2 text-xs"
+                  className="py-2 text-xs h-9"
                 >
                   {deploying ? 'Deploying...' : 'Deploy'}
                 </ModernButton>
@@ -277,21 +277,21 @@ export default function BuilderPage() {
 
           {/* Deploy completion result card */}
           {deployResult && (
-            <div className="p-6 border-t border-white/5 bg-slate-950/40 flex flex-col gap-3">
-              <div className="flex items-center gap-2 text-emerald-400">
+            <div className="p-6 border-t border-border-color bg-bg-secondary flex flex-col gap-3">
+              <div className="flex items-center gap-2 text-emerald-600">
                 <DynamicIcon name="CheckCircle2" size={16} />
                 <span className="text-xs font-bold">App Deployed successfully!</span>
               </div>
-              <p className="text-[11px] text-slate-400">Your dynamic Neon schema has been synchronised.</p>
+              <p className="text-[11px] text-text-secondary">Your dynamic Neon schema has been synchronised.</p>
               
               <a href={deployResult.appUrl} target="_blank" rel="noreferrer">
-                <ModernButton className="w-full py-2 text-xs gap-1">
+                <ModernButton className="w-full py-2 text-xs gap-1 h-9">
                   <span>Launch Live Subdomain</span>
                   <DynamicIcon name="ExternalLink" size={12} />
                 </ModernButton>
               </a>
 
-              <ModernButton variant="ghost" onClick={() => setDeployResult(null)} className="w-full py-1 text-xs">
+              <ModernButton variant="ghost" onClick={() => setDeployResult(null)} className="w-full py-1 text-xs h-9">
                 Edit App
               </ModernButton>
             </div>
@@ -303,7 +303,7 @@ export default function BuilderPage() {
               e.preventDefault();
               handleGenerate(input);
             }}
-            className="p-4 border-t border-white/5 bg-slate-950/30 flex gap-2"
+            className="p-4 border-t border-border-color bg-bg-secondary flex gap-2"
           >
             <input
               type="text"
@@ -311,12 +311,12 @@ export default function BuilderPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={loading}
-              className="flex-1 bg-white/5 border border-white/5 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500/50 transition duration-200"
+              className="flex-1 bg-bg-primary border border-border-color rounded-xl px-4 py-3 text-xs text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-primary/50 transition duration-200 shadow-subtle"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="h-10 w-10 rounded-xl bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 shrink-0"
+              className="h-10 w-10 rounded-xl bg-accent-primary hover:bg-accent-hover text-white flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 shrink-0 shadow-subtle"
             >
               <DynamicIcon name="Send" size={14} />
             </button>
@@ -325,10 +325,10 @@ export default function BuilderPage() {
         </div>
 
         {/* Right Side: Interactive preview / schema workspace */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-[#07090e]">
+        <div className="flex-1 flex flex-col overflow-hidden bg-bg-primary">
           
           {/* Workspace Tabs Navbar */}
-          <div className="border-b border-white/5 px-6 py-2 flex items-center justify-between bg-slate-950/20">
+          <div className="border-b border-border-color px-6 py-2 flex items-center justify-between bg-bg-secondary">
             <div className="flex gap-1.5">
               {[
                 { id: 'preview', label: 'Live Sandbox Preview', icon: 'Eye' },
@@ -338,10 +338,10 @@ export default function BuilderPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-subtle ${
                     activeTab === tab.id
-                      ? 'bg-white/10 text-white border border-white/10'
-                      : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                      ? 'bg-bg-primary text-text-primary border border-border-color shadow-subtle'
+                      : 'text-text-secondary hover:text-text-primary border border-transparent'
                   }`}
                 >
                   <DynamicIcon name={tab.icon} size={13} />
@@ -354,8 +354,8 @@ export default function BuilderPage() {
           {/* Active Work Workspace */}
           <div className="flex-1 overflow-y-auto p-8">
             {!metadata ? (
-              <div className="h-full flex flex-col items-center justify-center my-auto text-slate-500 gap-2">
-                <DynamicIcon name="MonitorPlay" size={48} className="text-slate-700 animate-pulse" />
+              <div className="h-full flex flex-col items-center justify-center my-auto text-text-secondary gap-2">
+                <DynamicIcon name="MonitorPlay" size={48} className="text-text-muted animate-pulse" />
                 <span className="text-xs font-medium">Write a prompt to see the live app render.</span>
               </div>
             ) : (
@@ -367,13 +367,13 @@ export default function BuilderPage() {
                     {/* Rendered App Name/Description */}
                     <div className="flex justify-between items-center">
                       <div>
-                        <h2 className="text-2xl font-bold tracking-tight text-white">{metadata.name}</h2>
-                        <p className="text-xs text-slate-400 mt-0.5">{metadata.description || "Interactive operational sandbox."}</p>
+                        <h2 className="text-2xl font-bold tracking-tight text-text-primary">{metadata.name}</h2>
+                        <p className="text-xs text-text-secondary mt-0.5">{metadata.description || "Interactive operational sandbox."}</p>
                       </div>
                       
                       <div className="flex items-center gap-2">
                         <span className="h-3 w-3 rounded-full" style={{ backgroundColor: metadata.themeColor }} />
-                        <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Preview Engine</span>
+                        <span className="text-xs text-text-secondary font-semibold uppercase tracking-wider">Preview Engine</span>
                       </div>
                     </div>
 
@@ -384,7 +384,7 @@ export default function BuilderPage() {
                       if (page.type === 'dashboard') {
                         return (
                           <div key={page.id} className="flex flex-col gap-6">
-                            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">{page.title} View</h3>
+                            <h3 className="text-sm font-bold text-text-secondary uppercase tracking-widest">{page.title} View</h3>
                             
                             {/* Stat cards grid */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -398,8 +398,8 @@ export default function BuilderPage() {
 
                                   return (
                                     <GlassCard key={comp.id}>
-                                      <p className="text-xs text-slate-500 font-semibold">{comp.title || comp.statConfig?.label}</p>
-                                      <h4 className="text-3xl font-extrabold text-white mt-1">
+                                      <p className="text-xs text-text-secondary font-semibold">{comp.title || comp.statConfig?.label}</p>
+                                      <h4 className="text-3xl font-extrabold text-text-primary mt-1">
                                         {comp.statConfig?.aggregation === 'sum' ? '$' : ''}{aggregateVal}
                                       </h4>
                                     </GlassCard>
@@ -413,10 +413,10 @@ export default function BuilderPage() {
                                 .filter(c => c.type === 'chart')
                                 .map(comp => (
                                   <GlassCard key={comp.id} className="h-64 flex flex-col justify-between">
-                                    <h4 className="text-xs font-bold text-slate-400">{comp.title || comp.chartConfig?.title}</h4>
+                                    <h4 className="text-xs font-bold text-text-secondary">{comp.title || comp.chartConfig?.title}</h4>
                                     
                                     {/* Mock chart illustration */}
-                                    <div className="flex-1 flex items-end justify-around gap-2 px-4 py-6 border-b border-white/5">
+                                    <div className="flex-1 flex items-end justify-around gap-2 px-4 py-6 border-b border-border-color">
                                       {(previewData[comp.table || ''] || []).map((row, idx) => {
                                         const hVal = Math.min(100, Math.max(20, (Number(row[comp.chartConfig?.yAxis || '']) || 40) / 500));
                                         return (
@@ -425,11 +425,11 @@ export default function BuilderPage() {
                                               className="w-full rounded-t-lg transition-all duration-500"
                                               style={{
                                                 height: `${hVal}%`,
-                                                backgroundColor: metadata.themeColor || '#3b82f6',
+                                                backgroundColor: metadata.themeColor || '#FF6600',
                                                 opacity: 0.8
                                               }}
                                             />
-                                            <span className="text-[10px] text-slate-500 truncate w-full text-center">
+                                            <span className="text-[10px] text-text-secondary truncate w-full text-center">
                                               {row[comp.chartConfig?.xAxis || ''] || `Item ${idx}`}
                                             </span>
                                           </div>
@@ -448,7 +448,7 @@ export default function BuilderPage() {
                         return (
                           <div key={page.id} className="flex flex-col gap-4">
                             <div className="flex items-center justify-between">
-                              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">{page.title} View</h3>
+                              <h3 className="text-sm font-bold text-text-secondary uppercase tracking-widest">{page.title} View</h3>
                               
                               {page.components.map(comp => comp.type === 'table-view' && (
                                 <ModernButton
@@ -457,7 +457,7 @@ export default function BuilderPage() {
                                     setShowAddForm(comp.table || null);
                                     setFormData({});
                                   }}
-                                  className="py-1.5 px-3 text-xs gap-1"
+                                  className="py-1.5 px-3 text-xs gap-1 h-8"
                                 >
                                   <DynamicIcon name="Plus" size={12} />
                                   <span>Add Record</span>
@@ -467,27 +467,27 @@ export default function BuilderPage() {
 
                             {/* Render Add Row Form Overlay */}
                             {showAddForm && (
-                              <GlassCard className="border border-blue-500/20 bg-slate-900">
-                                <h4 className="text-xs font-bold text-white mb-4">Add new record to {showAddForm}</h4>
+                              <GlassCard className="border border-border-color bg-bg-secondary shadow-subtle">
+                                <h4 className="text-xs font-bold text-text-primary mb-4">Add new record to {showAddForm}</h4>
                                 <div className="grid grid-cols-2 gap-4">
                                   {metadata.database.tables.find(t => t.name === showAddForm)?.fields.map(field => {
                                     if (field.type === 'relation') return null;
                                     return (
                                       <div key={field.name} className="flex flex-col gap-1.5">
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase">{field.name}</label>
+                                        <label className="text-[10px] font-bold text-text-secondary uppercase">{field.name}</label>
                                         <input
                                           type={field.type === 'number' ? 'number' : 'text'}
                                           placeholder={`Enter ${field.name}`}
                                           onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
-                                          className="bg-slate-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                                          className="bg-bg-primary border border-border-color rounded-lg px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-accent-primary"
                                         />
                                       </div>
                                     );
                                   })}
                                 </div>
                                 <div className="flex gap-2 justify-end mt-4">
-                                  <ModernButton variant="ghost" onClick={() => setShowAddForm(null)} className="py-1 text-xs">Cancel</ModernButton>
-                                  <ModernButton onClick={() => handleAddRow(showAddForm)} className="py-1 px-4 text-xs">Save</ModernButton>
+                                  <ModernButton variant="ghost" onClick={() => setShowAddForm(null)} className="py-1 text-xs h-8">Cancel</ModernButton>
+                                  <ModernButton onClick={() => handleAddRow(showAddForm)} className="py-1 px-4 text-xs h-8">Save</ModernButton>
                                 </div>
                               </GlassCard>
                             )}
@@ -500,18 +500,18 @@ export default function BuilderPage() {
                               const rows = previewData[comp.table || ''] || [];
 
                               return (
-                                <GlassCard key={comp.id} className="p-0 border border-white/5 overflow-hidden">
+                                <GlassCard key={comp.id} className="p-0 border border-border-color overflow-hidden shadow-subtle">
                                   <table className="w-full text-left border-collapse">
                                     <thead>
-                                      <tr className="bg-white/5 border-b border-white/5 text-[10px] text-slate-400 uppercase font-semibold">
+                                      <tr className="bg-bg-primary border-b border-border-color text-[10px] text-text-secondary uppercase font-semibold">
                                         {columns.map(col => (
                                           <th key={col} className="px-4 py-3">{col}</th>
                                         ))}
                                       </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-white/5 text-xs text-slate-300">
+                                    <tbody className="divide-y divide-border-color text-xs text-text-secondary">
                                       {rows.map((row, rIdx) => (
-                                        <tr key={row.id || rIdx} className="hover:bg-white/[0.02] transition">
+                                        <tr key={row.id || rIdx} className="hover:bg-bg-primary/50 text-text-primary transition duration-150">
                                           {columns.map(col => (
                                             <td key={col} className="px-4 py-3 font-medium">
                                               {row[col] === undefined ? '-' : String(row[col])}
@@ -541,25 +541,25 @@ export default function BuilderPage() {
                     {/* Database Visual Schema Mapper */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {metadata.database.tables.map((table) => (
-                        <GlassCard key={table.name} className="flex flex-col gap-3">
-                          <div className="flex items-center gap-2 border-b border-white/5 pb-2">
-                            <DynamicIcon name="Database" size={16} className="text-blue-500" />
-                            <h4 className="font-bold text-sm text-white">{table.name}</h4>
+                        <GlassCard key={table.name} className="flex flex-col gap-3 shadow-subtle border-border-color">
+                          <div className="flex items-center gap-2 border-b border-border-color pb-2">
+                            <DynamicIcon name="Database" size={16} className="text-accent-primary" />
+                            <h4 className="font-bold text-sm text-text-primary">{table.name}</h4>
                           </div>
 
                           <div className="flex flex-col gap-2">
                             {table.fields.map(field => (
                               <div key={field.name} className="flex items-center justify-between text-xs py-1">
-                                <span className="font-semibold text-slate-300">
+                                <span className="font-semibold text-text-primary">
                                   {field.name}
                                   {field.required && <span className="text-rose-500 ml-0.5">*</span>}
                                 </span>
                                 <div className="flex items-center gap-1.5">
-                                  <span className="px-1.5 py-0.5 rounded bg-white/5 text-[10px] text-slate-400 font-mono">
+                                  <span className="px-1.5 py-0.5 rounded bg-bg-primary border border-border-color text-[10px] text-text-secondary font-mono">
                                     {field.type}
                                   </span>
                                   {field.type === 'relation' && field.relation && (
-                                    <span className="text-[10px] text-blue-400 font-medium">
+                                    <span className="text-[10px] text-accent-primary font-medium">
                                       → {field.relation.targetTable} ({field.relation.relationType})
                                     </span>
                                   )}
@@ -573,8 +573,8 @@ export default function BuilderPage() {
 
                     {/* Plain JSON Metadata Editor */}
                     <div className="flex flex-col gap-3">
-                      <h4 className="text-xs font-bold text-slate-400 uppercase">Raw AppMetadata Specification</h4>
-                      <pre className="bg-slate-950 p-6 rounded-2xl border border-white/5 overflow-x-auto text-[11px] font-mono text-slate-300 leading-relaxed max-h-96">
+                      <h4 className="text-xs font-bold text-text-secondary uppercase">Raw AppMetadata Specification</h4>
+                      <pre className="bg-bg-secondary p-6 rounded-2xl border border-border-color overflow-x-auto text-[11px] font-mono text-text-primary leading-relaxed max-h-96 shadow-subtle">
                         {JSON.stringify(metadata, null, 2)}
                       </pre>
                     </div>
@@ -586,40 +586,40 @@ export default function BuilderPage() {
                 {activeTab === 'workflows' && (
                   <div className="flex flex-col gap-6 max-w-3xl mx-auto">
                     <div className="flex flex-col gap-1">
-                      <h2 className="text-xl font-bold tracking-tight text-white">Workflow Automations</h2>
-                      <p className="text-xs text-slate-400">Trigger Slack notifications, dynamic emails, or data rows creation automatically.</p>
+                      <h2 className="text-xl font-bold tracking-tight text-text-primary">Workflow Automations</h2>
+                      <p className="text-xs text-text-secondary">Trigger Slack notifications, dynamic emails, or data rows creation automatically.</p>
                     </div>
 
                     <div className="flex flex-col gap-4 mt-2">
                       {metadata.workflows.length === 0 ? (
-                        <div className="py-12 border border-dashed border-white/10 rounded-2xl text-center text-xs text-slate-500">
+                        <div className="py-12 border border-dashed border-border-color rounded-2xl text-center text-xs text-text-muted bg-bg-secondary shadow-subtle">
                           No workflows configured for this application. Ask Gemini to write an automation!
                         </div>
                       ) : (
                         metadata.workflows.map((wf) => (
-                          <GlassCard key={wf.id} className="flex flex-col gap-4">
-                            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                          <GlassCard key={wf.id} className="flex flex-col gap-4 shadow-subtle border-border-color">
+                            <div className="flex items-center justify-between border-b border-border-color pb-3">
                               <div>
-                                <h4 className="font-bold text-white text-sm">{wf.name}</h4>
-                                <p className="text-[10px] text-slate-500 mt-0.5">Trigger: Database {wf.trigger.type} on table <strong className="text-slate-400">{wf.trigger.table}</strong></p>
+                                <h4 className="font-bold text-text-primary text-sm">{wf.name}</h4>
+                                <p className="text-[10px] text-text-secondary mt-0.5">Trigger: Database {wf.trigger.type} on table <strong className="text-text-primary">{wf.trigger.table}</strong></p>
                               </div>
-                              <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-400 font-semibold tracking-wide uppercase">Active</span>
+                              <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-600 font-semibold tracking-wide uppercase shadow-subtle">Active</span>
                             </div>
 
                             {/* Workflow steps sequence rendering */}
                             <div className="flex flex-col gap-3">
                               {wf.steps.map((step, idx) => (
-                                <div key={step.id} className="flex items-start gap-3 text-xs bg-white/5 border border-white/5 rounded-xl p-3.5">
-                                  <div className="h-6 w-6 rounded-lg bg-blue-500/15 border border-blue-500/25 flex items-center justify-center text-blue-400 shrink-0 font-bold text-[10px]">
+                                <div key={step.id} className="flex items-start gap-3 text-xs bg-bg-primary border border-border-color rounded-xl p-3.5 shadow-subtle">
+                                  <div className="h-6 w-6 rounded-lg bg-accent-primary/10 border border-accent-primary/20 flex items-center justify-center text-accent-primary shrink-0 font-bold text-[10px]">
                                     {idx + 1}
                                   </div>
                                   
                                   <div className="flex-1">
                                     <div className="flex items-center gap-2">
-                                      <span className="font-bold text-white">{step.name}</span>
-                                      <span className="px-1.5 py-0.5 rounded bg-white/5 text-[9px] text-slate-400 uppercase font-mono">{step.type}</span>
+                                      <span className="font-bold text-text-primary">{step.name}</span>
+                                      <span className="px-1.5 py-0.5 rounded bg-bg-secondary border border-border-color text-[9px] text-text-secondary uppercase font-mono">{step.type}</span>
                                     </div>
-                                    <pre className="text-[10px] text-slate-500 font-mono mt-1 whitespace-pre-wrap">
+                                    <pre className="text-[10px] text-text-secondary font-mono mt-1 whitespace-pre-wrap">
                                       {JSON.stringify(step.config, null, 2)}
                                     </pre>
                                   </div>

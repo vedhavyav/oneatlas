@@ -29,7 +29,7 @@ export function DynamicIcon({
 }
 
 /**
- * GlassCard component providing premium dark-mode glassmorphic aesthetics.
+ * GlassCard component providing flat, clean border styling matching YC spec.
  */
 export function GlassCard({
   className,
@@ -39,7 +39,7 @@ export function GlassCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-white/[0.08] bg-slate-900/60 backdrop-blur-xl p-6 shadow-2xl transition-all duration-300 hover:border-white/[0.15] hover:shadow-blue-500/5",
+        "rounded-2xl border border-border-color bg-bg-secondary p-7 shadow-subtle transition-subtle hover:border-text-muted",
         className
       )}
       {...props}
@@ -50,26 +50,17 @@ export function GlassCard({
 }
 
 /**
- * Premium gradient title header.
+ * Premium flat YC Orange title highlight text.
  */
 export function GradientText({
   children,
   className,
-  from = 'from-blue-400',
-  via = 'via-indigo-400',
-  to = 'to-purple-400',
   ...props
-}: {
-  children: React.ReactNode;
-  className?: string;
-  from?: string;
-  via?: string;
-  to?: string;
-} & React.HTMLAttributes<HTMLSpanElement>) {
+}: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
       className={cn(
-        `bg-gradient-to-r ${from} ${via} ${to} bg-clip-text text-transparent font-extrabold tracking-tight`,
+        "text-accent-primary font-bold tracking-tight",
         className
       )}
       {...props}
@@ -80,7 +71,7 @@ export function GradientText({
 }
 
 /**
- * Custom modern button matching glassmorphic theme.
+ * Custom modern button matching YC design specification.
  */
 export function ModernButton({
   children,
@@ -91,13 +82,13 @@ export function ModernButton({
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  const base = "px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 select-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed";
+  const base = "px-[22px] rounded-xl font-semibold text-[15px] h-[48px] transition-subtle flex items-center justify-center gap-2 select-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
-    primary: "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 active:scale-98",
-    secondary: "bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20 active:scale-98",
-    ghost: "text-slate-400 hover:text-white hover:bg-white/5 active:bg-white/10",
-    danger: "bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/20 active:scale-98"
+    primary: "bg-accent-primary hover:bg-accent-hover text-white hover:-translate-y-[1px]",
+    secondary: "bg-bg-secondary hover:bg-[#FAFAFA] text-text-primary border border-border-color hover:-translate-y-[1px]",
+    ghost: "text-text-secondary hover:text-text-primary hover:bg-bg-secondary/40 h-auto py-2.5 px-4 font-medium text-sm",
+    danger: "bg-rose-600 hover:bg-rose-500 text-white"
   };
 
   return (

@@ -3,25 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --background: #0b0f19;
-  --foreground: #f8fafc;
+  --bg-primary: #F5F5EE;
+  --bg-secondary: #FFFFFF;
+  --text-primary: #111111;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --border-color: #E5E7EB;
+  --accent-primary: #FF6600;
+  --accent-hover: #E65C00;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
 }
 
-/* Premium gradient animations */
-@keyframes gradient-bg {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* YC design additions */
+.border-subtle {
+  border: 1px solid var(--border-color);
 }
 
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-bg 8s ease infinite;
+.shadow-subtle {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 4px 24px rgba(0,0,0,0.03);
+}
+
+.transition-subtle {
+  transition: all 0.2s ease;
 }

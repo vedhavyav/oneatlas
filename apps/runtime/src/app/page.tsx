@@ -35,28 +35,28 @@ export default async function RuntimeLandingPage() {
   const builderUrl = siblingUrls.builder;
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col justify-between">
+    <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col justify-between transition-subtle">
       {/* Top Navbar */}
-      <header className="border-b border-white/5 bg-slate-950/40 backdrop-blur px-8 py-4 flex items-center justify-between">
+      <header className="border-b border-border-color bg-bg-secondary px-8 py-4 flex items-center justify-between shadow-subtle">
         <div className="flex items-center gap-3">
-          <a href={siblingUrls.dashboard} className="h-8 w-8 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition mr-1">
+          <a href={siblingUrls.dashboard} className="h-8 w-8 rounded-lg bg-bg-primary border border-border-color flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-primary shadow-subtle transition-subtle mr-1">
             <DynamicIcon name="ArrowLeft" size={16} />
           </a>
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <div className="h-9 w-9 rounded-xl bg-accent-primary flex items-center justify-center shadow-subtle">
             <span className="font-extrabold text-white text-base">R</span>
           </div>
-          <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-            OneAtlas<span className="text-emerald-400">.runtime</span>
+          <span className="font-bold text-lg tracking-tight text-text-primary">
+            OneAtlas<span className="text-accent-primary">.runtime</span>
           </span>
         </div>
 
         <div className="flex items-center gap-3">
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-semibold ${
             dbOnline 
-              ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
-              : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+              ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' 
+              : 'bg-rose-500/10 border-rose-500/20 text-rose-600'
           }`}>
-            <span className={`h-1.5 w-1.5 rounded-full ${dbOnline ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+            <span className={`h-1.5 w-1.5 rounded-full ${dbOnline ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
             <span>Database: {dbOnline ? 'Online' : 'Offline'}</span>
           </div>
         </div>
@@ -65,37 +65,37 @@ export default async function RuntimeLandingPage() {
       {/* Main Container */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-8 py-16 flex flex-col gap-10 justify-center">
         <div className="text-center flex flex-col items-center gap-4">
-          <div className="h-16 w-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-inner">
+          <div className="h-16 w-16 rounded-3xl bg-accent-primary/10 border border-accent-primary/20 flex items-center justify-center text-accent-primary shadow-subtle">
             <DynamicIcon name="Cpu" size={32} />
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight">
+          <h1 className="text-4xl font-extrabold tracking-tight text-text-primary">
             OneAtlas <GradientText>Runtime Environment</GradientText>
           </h1>
-          <p className="text-slate-400 text-sm max-w-md leading-relaxed">
+          <p className="text-text-secondary text-sm max-w-md leading-relaxed">
             This console is execution host for generated operational tools. Deploy applications using the AI Builder and access them below.
           </p>
         </div>
 
         {/* Workspace Applications */}
         <div className="flex flex-col gap-4 mt-4">
-          <h2 className="text-base font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-            <DynamicIcon name="Layers" size={14} />
+          <h2 className="text-base font-bold uppercase tracking-wider text-text-secondary flex items-center gap-2">
+            <DynamicIcon name="Layers" size={14} className="text-accent-primary" />
             <span>Deployed Applications ({projects.length})</span>
           </h2>
 
           {projects.length === 0 ? (
-            <GlassCard className="text-center py-12 border border-white/5 flex flex-col items-center gap-4">
-              <div className="h-10 w-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-slate-500">
+            <GlassCard className="text-center py-12 border border-border-color bg-bg-secondary flex flex-col items-center gap-4 shadow-subtle">
+              <div className="h-10 w-10 rounded-xl bg-bg-primary border border-border-color flex items-center justify-center text-text-secondary">
                 <DynamicIcon name="Info" size={20} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">No active deployments found</p>
-                <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+                <p className="text-sm font-semibold text-text-primary">No active deployments found</p>
+                <p className="text-xs text-text-secondary mt-1 max-w-xs mx-auto">
                   {error ? `Database error: ${error}` : 'Generate and deploy a tool from the builder to get started.'}
                 </p>
               </div>
               <a href={builderUrl} target="_blank" rel="noreferrer">
-                <ModernButton className="py-2 text-xs">
+                <ModernButton className="py-2 text-xs h-9">
                   <DynamicIcon name="Sparkles" size={14} />
                   <span>Launch AI Builder</span>
                 </ModernButton>
@@ -111,26 +111,26 @@ export default async function RuntimeLandingPage() {
                   : `${protocol}//${project.slug}.${host}`;
 
                 return (
-                  <GlassCard key={project.id} className="flex flex-col justify-between h-40 border border-white/5 hover:border-emerald-500/20 transition duration-300">
+                  <GlassCard key={project.id} className="flex flex-col justify-between h-40 border border-border-color bg-bg-secondary hover:border-accent-primary/45 transition duration-300 shadow-subtle">
                     <div>
                       <div className="flex items-start justify-between">
                         <div>
-                          <h3 className="text-base font-bold text-white">{project.name}</h3>
-                          <p className="text-[10px] text-slate-400 font-semibold mt-0.5">slug: {project.slug}</p>
+                          <h3 className="text-base font-bold text-text-primary">{project.name}</h3>
+                          <p className="text-[10px] text-text-secondary font-semibold mt-0.5">slug: {project.slug}</p>
                         </div>
-                        <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[9px] text-emerald-400 font-semibold tracking-wide">
+                        <span className="px-2 py-0.5 rounded bg-accent-primary/10 border border-accent-primary/20 text-[9px] text-accent-primary font-semibold tracking-wide uppercase shadow-subtle">
                           v{versionNum} Active
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-2.5 line-clamp-2">{project.description || "Operational app."}</p>
+                      <p className="text-xs text-text-secondary mt-2.5 line-clamp-2">{project.description || "Operational app."}</p>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-white/5 pt-2.5 mt-3">
-                      <span className="text-[10px] text-slate-500">
+                    <div className="flex items-center justify-between border-t border-border-color pt-2.5 mt-3">
+                      <span className="text-[10px] text-text-muted">
                         {new Date(project.updatedAt).toLocaleDateString()}
                       </span>
                       <a href={appUrl}>
-                        <ModernButton variant="secondary" className="py-1 px-3 text-xs gap-1">
+                        <ModernButton variant="secondary" className="py-1 px-3 text-xs gap-1 h-8">
                           <span>Open Console</span>
                           <DynamicIcon name="ExternalLink" size={10} />
                         </ModernButton>
@@ -145,7 +145,7 @@ export default async function RuntimeLandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-6 text-center text-xs text-slate-600 font-medium">
+      <footer className="border-t border-border-color py-6 text-center text-xs text-text-muted font-medium bg-bg-secondary">
         &copy; {new Date().getFullYear()} OneAtlas.dev • Powered by Next.js Edge Runtime
       </footer>
     </div>

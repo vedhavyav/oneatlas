@@ -29,8 +29,8 @@ const PROVIDERS: ProviderMeta[] = [
     name: 'Slack Notification Webhook',
     provider: 'SLACK',
     icon: 'MessageSquare',
-    color: 'text-orange-400',
-    bg: 'bg-orange-500/10',
+    color: 'text-accent-primary',
+    bg: 'bg-accent-primary/10',
     fields: [
       { name: 'webhookUrl', label: 'Incoming Webhook URL', placeholder: 'https://hooks.slack.com/services/...', type: 'text' }
     ]
@@ -39,8 +39,8 @@ const PROVIDERS: ProviderMeta[] = [
     name: 'Custom Webhook HTTP Trigger',
     provider: 'WEBHOOK',
     icon: 'Link2',
-    color: 'text-blue-400',
-    bg: 'bg-blue-500/10',
+    color: 'text-text-primary',
+    bg: 'bg-text-secondary/10',
     fields: [
       { name: 'webhookUrl', label: 'HTTP POST URL', placeholder: 'https://api.yourcompany.com/webhook', type: 'text' }
     ]
@@ -49,8 +49,8 @@ const PROVIDERS: ProviderMeta[] = [
     name: 'Google Sheets Integration',
     provider: 'GOOGLE_SHEETS',
     icon: 'Grid',
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-500/10',
+    color: 'text-text-primary',
+    bg: 'bg-text-secondary/10',
     fields: [
       { name: 'spreadsheetId', label: 'Spreadsheet ID', placeholder: '1A2B3C4D...', type: 'text' },
       { name: 'sheetName', label: 'Sheet Name', placeholder: 'Sheet1', type: 'text' }
@@ -60,8 +60,8 @@ const PROVIDERS: ProviderMeta[] = [
     name: 'Gmail Automations',
     provider: 'GMAIL',
     icon: 'Mail',
-    color: 'text-rose-400',
-    bg: 'bg-rose-500/10',
+    color: 'text-text-primary',
+    bg: 'bg-text-secondary/10',
     fields: [
       { name: 'apiKey', label: 'OAuth API Key', placeholder: 'AIzaSy...', type: 'password' },
       { name: 'fromAddress', label: 'Verified Send-From Email', placeholder: 'alerts@company.com', type: 'text' }
@@ -71,8 +71,8 @@ const PROVIDERS: ProviderMeta[] = [
     name: 'Notion Workspace',
     provider: 'NOTION',
     icon: 'FileText',
-    color: 'text-slate-300',
-    bg: 'bg-slate-500/10',
+    color: 'text-text-primary',
+    bg: 'bg-text-secondary/10',
     fields: [
       { name: 'integrationToken', label: 'Internal Integration Token', placeholder: 'secret_...', type: 'password' },
       { name: 'databaseId', label: 'Database ID', placeholder: 'a1b2c3d4...', type: 'text' }
@@ -145,9 +145,9 @@ export function IntegrationsVault({ initialIntegrations, organizationId }: Integ
 
   return (
     <>
-      <GlassCard className="md:col-span-1 flex flex-col gap-4 border border-white/5">
-        <h2 className="text-lg font-bold tracking-tight">Integrations Vault</h2>
-        <p className="text-xs text-slate-400">Manage API keys and OAuth workflows for app automation triggers.</p>
+      <GlassCard className="md:col-span-1 flex flex-col gap-4 border border-border-color bg-bg-secondary p-7 shadow-subtle">
+        <h2 className="text-lg font-bold tracking-tight text-text-primary">Integrations Vault</h2>
+        <p className="text-xs text-text-secondary font-medium">Manage API keys and OAuth workflows for app automation triggers.</p>
         
         <div className="flex flex-col gap-3 mt-2">
           {PROVIDERS.map((item) => {
@@ -157,17 +157,17 @@ export function IntegrationsVault({ initialIntegrations, organizationId }: Integ
               <div 
                 key={item.provider} 
                 onClick={() => handleOpenConfig(item)}
-                className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-blue-500/20 transition cursor-pointer"
+                className="flex items-center justify-between p-3 rounded-xl bg-bg-primary border border-border-color hover:bg-bg-secondary hover:border-accent-primary/20 transition cursor-pointer shadow-subtle"
               >
                 <div className="flex items-center gap-3">
                   <div className={`h-8 w-8 rounded-lg ${item.bg} flex items-center justify-center ${item.color}`}>
                     <DynamicIcon name={item.icon} size={16} />
                   </div>
-                  <span className="text-xs font-semibold text-white">{item.name.split(' ')[0]}</span>
+                  <span className="text-xs font-semibold text-text-primary">{item.name.split(' ')[0]}</span>
                 </div>
 
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                  conn ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-white/5 text-slate-500 border border-white/5'
+                  conn ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-600' : 'bg-bg-secondary text-text-muted border border-border-color'
                 }`}>
                   {conn ? 'Active' : 'Unwired'}
                 </span>
@@ -179,22 +179,22 @@ export function IntegrationsVault({ initialIntegrations, organizationId }: Integ
 
       {/* Configuration Dialog */}
       {selectedProvider && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <GlassCard className="max-w-md w-full border border-white/10 flex flex-col gap-5 bg-slate-900 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-white/5 pb-3">
+        <div className="fixed inset-0 bg-text-primary/10 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <GlassCard className="max-w-md w-full border border-border-color flex flex-col gap-5 bg-bg-secondary shadow-subtle">
+            <div className="flex items-center justify-between border-b border-border-color pb-3">
               <div className="flex items-center gap-3">
                 <div className={`h-9 w-9 rounded-lg ${selectedProvider.bg} flex items-center justify-center ${selectedProvider.color}`}>
                   <DynamicIcon name={selectedProvider.icon} size={18} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-sm">{selectedProvider.name}</h3>
-                  <p className="text-[10px] text-slate-400">Configure connection credentials</p>
+                  <h3 className="font-bold text-text-primary text-sm">{selectedProvider.name}</h3>
+                  <p className="text-[10px] text-text-secondary">Configure connection credentials</p>
                 </div>
               </div>
               
               <button 
                 onClick={() => setSelectedProvider(null)}
-                className="h-7 w-7 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white transition"
+                className="h-7 w-7 rounded-lg bg-bg-primary border border-border-color flex items-center justify-center text-text-secondary hover:text-text-primary transition shadow-subtle"
               >
                 <DynamicIcon name="X" size={14} />
               </button>
@@ -202,43 +202,43 @@ export function IntegrationsVault({ initialIntegrations, organizationId }: Integ
 
             <div className="flex flex-col gap-4">
               {/* Enabled toggle */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
-                <span className="text-xs font-semibold text-white">Enable Integration</span>
+              <div className="flex items-center justify-between p-3 rounded-xl bg-bg-primary border border-border-color">
+                <span className="text-xs font-semibold text-text-primary">Enable Integration</span>
                 <input 
                   type="checkbox" 
                   checked={active}
                   onChange={(e) => setActive(e.target.checked)}
-                  className="h-4 w-4 rounded border-white/10 bg-slate-950 text-blue-600 focus:ring-0 cursor-pointer"
+                  className="h-4 w-4 rounded border-border-color bg-bg-secondary text-accent-primary focus:ring-0 cursor-pointer"
                 />
               </div>
 
               {/* Dynamic fields */}
               {selectedProvider.fields.map(field => (
                 <div key={field.name} className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{field.label}</label>
+                  <label className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">{field.label}</label>
                   <input
                     type={field.type}
                     value={fieldsState[field.name] || ''}
                     placeholder={field.placeholder}
                     onChange={(e) => setFieldsState(prev => ({ ...prev, [field.name]: e.target.value }))}
-                    className="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-bg-primary border border-border-color rounded-lg px-3 py-2 text-xs text-text-primary focus:outline-none focus:border-accent-primary"
                   />
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-end gap-2 border-t border-white/5 pt-4 mt-1">
+            <div className="flex justify-end gap-2 border-t border-border-color pt-4 mt-1">
               <ModernButton 
                 variant="ghost" 
                 onClick={() => setSelectedProvider(null)} 
-                className="py-1.5 text-xs"
+                className="py-1.5 text-xs h-9"
               >
                 Cancel
               </ModernButton>
               <ModernButton 
                 disabled={saving}
                 onClick={handleSave} 
-                className="py-1.5 px-5 text-xs"
+                className="py-1.5 px-5 text-xs h-9"
               >
                 {saving ? 'Saving...' : 'Save Settings'}
               </ModernButton>
