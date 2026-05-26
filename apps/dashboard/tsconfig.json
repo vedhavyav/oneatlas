@@ -1,34 +1,28 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2022"
+    ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
-
     "paths": {
       "@oneatlas/*": [
         "packages/*/src",
         "apps/*/src"
       ]
     },
-
     "resolveJsonModule": true,
-
     "allowJs": true,
     "checkJs": false,
-
     "jsx": "preserve",
-
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-
     "noEmit": true,
-
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -39,19 +33,27 @@
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
     "skipLibCheck": true,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-
   "exclude": [
     "node_modules",
     "dist",
     ".next"
+  ],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }
