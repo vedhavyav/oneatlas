@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { executeInSchema } from '@oneatlas/db';
 import { DeploymentManager } from '@oneatlas/deployment';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
