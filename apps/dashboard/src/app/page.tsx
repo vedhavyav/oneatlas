@@ -145,6 +145,12 @@ export default async function DashboardPage() {
           </span>
         </div>
 
+        {/* Navigation items matching style system menu spec */}
+        <nav className="hidden md:flex items-center gap-8">
+          <a href="/" className="text-[15px] font-medium text-text-primary transition-subtle border-b-2 border-accent-primary pb-0.5">Dashboard</a>
+          <a href="/pricing" className="text-[15px] font-medium text-text-secondary hover:text-text-primary transition-subtle">Pricing</a>
+        </nav>
+
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-secondary border border-border-color text-xs text-text-secondary font-medium shadow-subtle">
             <DynamicIcon name="Box" size={14} className="text-accent-primary" />
