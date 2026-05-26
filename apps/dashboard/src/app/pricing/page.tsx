@@ -1,5 +1,7 @@
 'use client';
 
+export const runtime = 'edge';
+
 import React, { useState } from 'react';
 import { GlassCard, ModernButton, DynamicIcon } from '@oneatlas/ui';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
