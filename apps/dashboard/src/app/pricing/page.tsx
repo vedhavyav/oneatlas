@@ -265,35 +265,106 @@ const COMPARISON_MATRIX: ComparisonCategory[] = [
   }
 ];
 
+const WHY_ATLAS_ITEMS = [
+  {
+    feature: 'Ease of Use',
+    atlas: 'No technical background needed',
+    others: 'Headache for non-coders'
+  },
+  {
+    feature: 'What You Can Build',
+    atlas: 'Fully-featured apps',
+    others: 'Basic apps only'
+  },
+  {
+    feature: 'All-in-one Platform',
+    atlas: 'Everything built-in',
+    others: 'Requires external services'
+  },
+  {
+    feature: 'SEO',
+    atlas: 'Built-in SEO tools',
+    others: 'Not supported'
+  },
+  {
+    feature: 'Human Support',
+    atlas: 'Live chat & calls',
+    others: 'Little to no support'
+  },
+  {
+    feature: 'Error Correction',
+    atlas: 'Smart & automatic',
+    others: 'Gets stuck often'
+  },
+  {
+    feature: 'Hosting',
+    atlas: 'Scales with you',
+    others: 'Limited'
+  }
+];
+
 const FAQS = [
   {
-    category: 'Billing',
-    question: 'How do monthly credits work?',
-    answer: 'Monthly credits are consumed when generating or modifying applications through the AI Builder, and during custom automated background workflow steps (like Gemini text generation). Unused credits do not roll over to the next month.'
+    category: 'Billing & Limits',
+    question: 'What counts as AI usage?',
+    answer: 'AI usage includes app generation, editing, workflows, automations, AI actions, and model inference requests across the platform.'
   },
   {
-    category: 'Billing',
-    question: 'Can I upgrade or downgrade anytime?',
-    answer: 'Yes, you can upgrade, downgrade, or cancel your subscription at any time directly from the settings panel. If you cancel, your access will continue until the end of your billing cycle.'
+    category: 'Features',
+    question: 'Can I deploy real production applications?',
+    answer: 'Yes. OneAtlas includes hosting, deployments, authentication, databases, and infrastructure management out of the box.'
   },
   {
-    category: 'Domains',
-    question: 'How do custom domains work?',
-    answer: 'Custom domains allow you to point your own domains (e.g. tools.yourcompany.com) to your generated applications. Builder includes 1 domain, while Studio and Scale support multi-domain configurations.'
+    category: 'General',
+    question: 'Which AI models does OneAtlas support?',
+    answer: 'OneAtlas supports leading AI providers and models, including OpenAI, Anthropic, Gemini, DeepSeek, and selected open-source models.'
   },
   {
-    category: 'Infrastructure',
-    question: 'Where is my data hosted?',
-    answer: 'Your backend resources and PostgreSQL databases are dynamically hosted on serverless, edge-optimized infrastructure via Cloudflare and Neon database clusters. Scale tier features dedicated, high-performance execution nodes.'
+    category: 'Billing & Limits',
+    question: 'What happens if I reach my plan limit?',
+    answer: 'You can purchase additional usage capacity or upgrade instantly without affecting existing projects.'
+  },
+  {
+    category: 'Features',
+    question: 'Can I collaborate with my team?',
+    answer: 'Yes. Team workspaces, permissions, shared environments, and collaboration features are available on Studio plans and above.'
+  },
+  {
+    category: 'Features',
+    question: 'Is hosting included in every plan?',
+    answer: 'Yes. Hosting, SSL, deployment infrastructure, and scaling are built into the platform.'
+  },
+  {
+    category: 'Features',
+    question: 'Can I connect external APIs and databases?',
+    answer: 'Absolutely. OneAtlas supports APIs, databases, webhooks, third-party services, and external integrations.'
+  },
+  {
+    category: 'Enterprise',
+    question: 'Do you support private deployments?',
+    answer: 'Enterprise customers can deploy within isolated environments, dedicated infrastructure, or private cloud configurations.'
+  },
+  {
+    category: 'General',
+    question: 'Who owns the generated apps and code?',
+    answer: 'You do. Your applications, data, workflows, and exported code remain fully yours.'
+  },
+  {
+    category: 'General',
+    question: 'Do you offer startup or student programs?',
+    answer: 'Yes. OneAtlas supports startups, universities, hackathons, and developer communities through special access programs.'
   }
 ];
 
 export default function PricingPage() {
-  const [activeFaqCategory, setActiveFaqCategory] = useState('Billing');
+  const [activeFaqCategory, setActiveFaqCategory] = useState('All');
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
 
-  const categories = Array.from(new Set(FAQS.map(f => f.category)));
-  const filteredFaqs = FAQS.filter(f => f.category === activeFaqCategory);
+  const categories = ['All', 'General', 'Features', 'Billing & Limits', 'Enterprise'];
+  
+  const filteredFaqs = activeFaqCategory === 'All' 
+    ? FAQS 
+    : FAQS.filter(f => f.category === activeFaqCategory);
 
   const scrollToComparison = () => {
     const el = document.getElementById('comparison-matrix');
@@ -427,6 +498,105 @@ export default function PricingPage() {
               </div>
             </div>
           ))}
+        </section>
+
+        {/* Enterprise Banner Section */}
+        <section className="rounded-2xl border border-border-color bg-bg-secondary p-8 shadow-subtle flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+          <div className="flex-1 w-full">
+            <div className="flex items-center gap-2.5">
+              <span className="px-2 py-0.5 rounded bg-accent-primary/10 border border-accent-primary/20 text-[9px] text-accent-primary font-bold uppercase tracking-wider shadow-subtle">
+                Enterprise
+              </span>
+              <span className="text-[11px] text-text-secondary font-semibold">Infrastructure, governance, and security for modern organizations.</span>
+            </div>
+            <h2 className="text-2xl font-extrabold text-text-primary mt-3">Enterprise Capabilities</h2>
+            
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4.5 gap-x-8 mt-6">
+              {[
+                { title: 'Deployment Options', desc: 'Dedicated cloud, VPC, or on-prem deployment', icon: 'Cloud' },
+                { title: 'Identity & Access', desc: 'SSO, SAML, SCIM provisioning', icon: 'UserCheck' },
+                { title: 'Security Controls', desc: 'Audit logs, advanced governance, policy management', icon: 'Shield' },
+                { title: 'Compliance Support', desc: 'SOC2-ready operational workflows', icon: 'CheckSquare' },
+                { title: 'AI Infrastructure', desc: 'Custom model routing & private integrations', icon: 'Cpu' },
+                { title: 'Team Management', desc: 'Advanced environments & permission systems', icon: 'Users' },
+                { title: 'Reliability', desc: 'SLA-backed uptime guarantees', icon: 'Activity' },
+                { title: 'Regional Deployment', desc: 'Multi-region infrastructure controls', icon: 'Globe' },
+                { title: 'Support', desc: 'Dedicated onboarding & solutions engineering', icon: 'LifeBuoy' },
+              ].map((item) => (
+                <div key={item.title} className="flex gap-2.5 text-xs">
+                  <div className="text-accent-primary shrink-0 mt-0.5">
+                    <DynamicIcon name={item.icon} size={14} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-text-primary">{item.title}</h4>
+                    <p className="text-text-secondary text-[11px] mt-0.5 leading-normal font-medium">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="shrink-0 flex flex-col items-stretch lg:items-end justify-center gap-3 border-t lg:border-t-0 lg:border-l border-border-color pt-6 lg:pt-0 lg:pl-8 w-full lg:w-auto">
+            <div className="text-left lg:text-right">
+              <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Pricing</span>
+              <h3 className="text-2xl font-extrabold text-text-primary mt-0.5">Custom engagement</h3>
+              <span className="text-[11px] text-text-secondary font-medium block mt-1">Best For: Enterprises & regulated operations</span>
+            </div>
+            <ModernButton 
+              variant="primary" 
+              className="text-xs font-semibold px-6 h-11"
+              onClick={() => alert("Connecting you with the OneAtlas Enterprise team...")}
+            >
+              Speak with OneAtlas
+            </ModernButton>
+          </div>
+        </section>
+
+        {/* Why Atlas Comparison Section */}
+        <section className="mt-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold tracking-tight text-text-primary">
+              Why Atlas?
+            </h2>
+            <p className="text-xs text-text-secondary font-medium mt-2">
+              See how Atlas stacks up against other AI app builders across the features that matter most.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-border-color bg-bg-secondary shadow-subtle">
+            <table className="w-full border-collapse text-left min-w-[700px]">
+              <thead>
+                <tr className="border-b border-border-color bg-bg-primary/30 text-xs">
+                  <th className="py-5 px-6 font-bold text-text-primary w-2/5">Feature</th>
+                  <th className="py-5 px-6 font-bold text-accent-primary text-center w-1.5/5">Atlas</th>
+                  <th className="py-5 px-6 font-bold text-text-secondary text-center w-1.5/5">Others</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border-color text-xs font-medium text-text-secondary">
+                {WHY_ATLAS_ITEMS.map((item, index) => (
+                  <tr key={index} className="hover:bg-bg-primary/10 transition-subtle">
+                    <td className="py-4.5 px-6 font-bold text-text-primary">{item.feature}</td>
+                    
+                    {/* Atlas Score */}
+                    <td className="py-4.5 px-6 text-center bg-accent-primary/[0.01]">
+                      <span className="inline-flex items-center gap-1.5 text-accent-primary font-bold">
+                        <DynamicIcon name="Check" size={14} className="shrink-0" />
+                        {item.atlas}
+                      </span>
+                    </td>
+
+                    {/* Others Score */}
+                    <td className="py-4.5 px-6 text-center">
+                      <span className="inline-flex items-center gap-1.5 text-text-muted font-normal">
+                        <DynamicIcon name="X" size={14} className="shrink-0" />
+                        {item.others}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
         {/* Detailed Comparison Table */}
