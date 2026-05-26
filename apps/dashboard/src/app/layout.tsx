@@ -1,3 +1,4 @@
+// @ts-ignore: Allow importing global CSS without type declarations
 import './globals.css';
 import React from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
