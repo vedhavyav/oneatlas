@@ -34,13 +34,20 @@ export function getSiblingUrls(currentHost?: string | null): SiblingUrls {
         basePrefix = hostname.replace('.pages.dev', '');
       }
 
+      // Automatically detect tenant suffix family (e.g. "-7w6" or "")
+      let tenantSuffix = '';
+      const match = hostname.match(/oneatlas(-[a-z0-9]+)?/i);
+      if (match && match[1]) {
+        tenantSuffix = match[1]; // e.g. "-7w6"
+      }
+
       // Check if this is the oneatlas tenant/project family
       const cleanPrefix = basePrefix.split('.').pop() || '';
-      if (cleanPrefix === 'oneatlas' || cleanPrefix === 'oneatlas-7w6') {
+      if (cleanPrefix.startsWith('oneatlas')) {
         const previewPart = basePrefix.includes('.') ? basePrefix.substring(0, basePrefix.lastIndexOf('.') + 1) : '';
-        dashboard = `https://${previewPart}oneatlas-7w6.pages.dev`;
-        builder = `https://${previewPart}oneatlas-builder.pages.dev`;
-        runtime = `https://${previewPart}oneatlas-runtime.pages.dev`;
+        dashboard = `https://${previewPart}oneatlas${tenantSuffix}.pages.dev`;
+        builder = `https://${previewPart}oneatlas-builder${tenantSuffix}.pages.dev`;
+        runtime = `https://${previewPart}oneatlas-runtime${tenantSuffix}.pages.dev`;
       } else {
         // Fallback generic pages.dev sibling resolver
         dashboard = `https://${basePrefix}.pages.dev`;
