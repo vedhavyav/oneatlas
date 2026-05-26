@@ -64,7 +64,8 @@ export async function POST(req: NextRequest) {
         engine.executeWorkflow(workflow, {
           schema: activeDeployment.schemaName,
           triggerData: insertedRow,
-          userId: undefined
+          userId: undefined,
+          organizationId: activeDeployment.project.organizationId
         }).catch(err => {
           console.error(`Workflow ${workflow.name} execution failed:`, err);
         });

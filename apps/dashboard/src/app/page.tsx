@@ -3,6 +3,10 @@ import { headers } from 'next/headers';
 import { prisma } from '@oneatlas/db';
 import { GlassCard, GradientText, ModernButton, DynamicIcon } from '@oneatlas/ui';
 import { getSiblingUrls } from '@oneatlas/metadata';
+import { IntegrationsVault } from './IntegrationsVault';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+
+
 
 export const runtime = 'edge';
 
@@ -144,9 +148,16 @@ export default async function DashboardPage() {
             <DynamicIcon name="Box" size={14} className="text-blue-500" />
             <span>Workspace: {org.name}</span>
           </div>
-          <div className="h-8 w-8 rounded-full bg-slate-800 border border-white/10 flex items-center justify-center font-bold text-xs text-slate-200">
-            U
-          </div>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <button className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold select-none transition">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
         </div>
       </header>
 
@@ -268,37 +279,7 @@ export default async function DashboardPage() {
         {/* Bottom Split: Integrations & Audit Logs */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Integrations Module */}
-          <GlassCard className="md:col-span-1 flex flex-col gap-4">
-            <h2 className="text-lg font-bold tracking-tight">Integrations Vault</h2>
-            <p className="text-xs text-slate-400">Manage API keys and OAuth workflows for app automation triggers.</p>
-            
-            <div className="flex flex-col gap-3 mt-2">
-              {[
-                { name: 'Slack', provider: 'SLACK', icon: 'MessageSquare', color: 'text-orange-400', bg: 'bg-orange-500/10' },
-                { name: 'Google Sheets', provider: 'GOOGLE_SHEETS', icon: 'Grid', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-                { name: 'Gmail', provider: 'GMAIL', icon: 'Mail', color: 'text-rose-400', bg: 'bg-rose-500/10' },
-                { name: 'Notion Workspace', provider: 'NOTION', icon: 'FileText', color: 'text-slate-300', bg: 'bg-slate-500/10' }
-              ].map((item) => {
-                const conn = integrations.some(i => i.provider === item.provider && i.active);
-                return (
-                  <div key={item.provider} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
-                    <div className="flex items-center gap-3">
-                      <div className={`h-8 w-8 rounded-lg ${item.bg} flex items-center justify-center ${item.color}`}>
-                        <DynamicIcon name={item.icon} size={16} />
-                      </div>
-                      <span className="text-xs font-semibold text-white">{item.name}</span>
-                    </div>
-
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                      conn ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-white/5 text-slate-500 border border-white/5'
-                    }`}>
-                      {conn ? 'Active' : 'Unwired'}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </GlassCard>
+          <IntegrationsVault initialIntegrations={integrations} organizationId={org.id} />
 
           {/* Audit Logs Module */}
           <GlassCard className="md:col-span-2 flex flex-col gap-4">

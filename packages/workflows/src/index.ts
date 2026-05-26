@@ -6,6 +6,7 @@ export interface WorkflowContext {
   schema: string;
   triggerData: Record<string, any>;
   userId?: string;
+  organizationId?: string;
 }
 
 /**
@@ -99,17 +100,57 @@ export class WorkflowEngine {
 
     switch (step.type) {
       case 'send-slack': {
+        let webhookUrl = '';
+        let integrationActive = false;
+        if (context.organizationId) {
+          const integration = await prisma.integration.findFirst({
+            where: {
+              organizationId: context.organizationId,
+              provider: 'SLACK',
+              active: true
+            }
+          });
+          if (integration && integration.credentials && typeof integration.credentials === 'object') {
+            const credentials = integration.credentials as Record<string, any>;
+            webhookUrl = credentials.webhookUrl || '';
+            integrationActive = true;
+          }
+        }
+
         const interpolatedMessage = interpolateTemplate(config.message || '', context.triggerData);
         const channel = config.channel || '#general';
         
-        console.log(`[Slack Webhook Mock] Sent message to ${channel}: "${interpolatedMessage}"`);
-        
-        // Mock success return
+        let delivered = false;
+        let responseText = '';
+        if (integrationActive && webhookUrl) {
+          try {
+            console.log(`[Slack Live Trigger] Sending webhook request to ${webhookUrl}`);
+            const slackRes = await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: interpolatedMessage,
+                channel: channel
+              })
+            });
+            delivered = slackRes.ok;
+            responseText = await slackRes.text();
+            console.log(`[Slack Live Trigger] Response status: ${slackRes.status}, body: ${responseText}`);
+          } catch (err: any) {
+            console.error('[Slack Live Trigger] Webhook request failed:', err);
+            responseText = err.message || String(err);
+          }
+        } else {
+          console.log(`[Slack Webhook Mock] Sent message to ${channel}: "${interpolatedMessage}"`);
+          delivered = true;
+        }
+
         return {
           channel,
           sentMessage: interpolatedMessage,
-          delivered: true,
-          provider: 'SLACK'
+          delivered,
+          provider: 'SLACK',
+          ...(responseText ? { response: responseText } : {})
         };
       }
 
@@ -171,13 +212,34 @@ export class WorkflowEngine {
 
       case 'call-webhook': {
         const url = interpolateTemplate(config.url || '', context.triggerData);
-        console.log(`[Webhook Mock] Calling POST ${url} with payload:`, context.triggerData);
+        console.log(`[Webhook Live Trigger] Calling POST ${url}`);
         
-        // Simulating HTTP Post fetch
+        let status = 200;
+        let responseData: any = { success: true };
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(context.triggerData)
+          });
+          status = res.status;
+          const text = await res.text();
+          try {
+            responseData = JSON.parse(text);
+          } catch {
+            responseData = { text };
+          }
+          console.log(`[Webhook Live Trigger] Response status: ${status}`);
+        } catch (err: any) {
+          console.error('[Webhook Live Trigger] request failed:', err);
+          status = 500;
+          responseData = { error: err.message || String(err) };
+        }
+
         return {
-          status: 200,
+          status,
           url,
-          response: { success: true }
+          response: responseData
         };
       }
 
@@ -190,8 +252,9 @@ export class WorkflowEngine {
         let resultText = "[Gemini Mock AI Step Output]";
         if (this.aiGateway) {
           try {
-            const response = await this.aiGateway.generateApp(`TASK: ${interpolatedPrompt}\nReturn a simple single-sentence summary of the task result.`);
-            resultText = response.description || response.name || resultText;
+            resultText = await this.aiGateway.generateText(
+              `TASK: ${interpolatedPrompt}\nReturn a simple single-sentence summary or response of the task result without extra commentary.`
+            );
           } catch (e) {
             console.error("AI step invocation failed, using fallback mock text:", e);
           }

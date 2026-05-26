@@ -34,6 +34,38 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [submitting, setSubmitting] = useState(false);
 
+  // Workflow runs state
+  const [runs, setRuns] = useState<any[]>([]);
+  const [loadingRuns, setLoadingRuns] = useState(false);
+  const [expandedRunId, setExpandedRunId] = useState<string | null>(null);
+  const [expandedStepId, setExpandedStepId] = useState<string | null>(null);
+
+  const loadRuns = async () => {
+    setLoadingRuns(true);
+    try {
+      const response = await fetch('/api/workflow-runs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug })
+      });
+      if (response.ok) {
+        const body = await response.json();
+        setRuns(body.runs || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingRuns(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activePageId === '__workflows__') {
+      loadRuns();
+    }
+  }, [activePageId]);
+
+
   // 1. Fetch deployment metadata
   useEffect(() => {
     async function loadDeployment() {
@@ -232,6 +264,23 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
                 <span>{page.title}</span>
               </button>
             ))}
+
+            {appMetadata.workflows && appMetadata.workflows.length > 0 && (
+              <button
+                onClick={() => {
+                  setActivePageId('__workflows__');
+                  setShowAddForm(false);
+                }}
+                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition ${
+                  activePageId === '__workflows__'
+                    ? 'bg-white/10 text-white'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                }`}
+              >
+                <DynamicIcon name="Activity" size={15} className="text-blue-400" />
+                <span>Automation Runs</span>
+              </button>
+            )}
           </nav>
         </div>
 
@@ -458,6 +507,162 @@ export default function RuntimeAppPage({ params }: { params: { slug: string } })
 
             </div>
           </>
+        )}
+
+        {activePageId === '__workflows__' && (
+          <div className="flex flex-col gap-6 max-w-5xl w-full mx-auto">
+            {/* Header */}
+            <div className="flex justify-between items-center border-b border-white/5 pb-4">
+              <div>
+                <h2 className="text-2xl font-extrabold tracking-tight text-white">Automation Runs</h2>
+                <p className="text-xs text-slate-400 mt-0.5">Audit log of background automation executions, triggers, and AI step statuses.</p>
+              </div>
+
+              <ModernButton 
+                onClick={loadRuns} 
+                disabled={loadingRuns} 
+                variant="secondary" 
+                className="py-1.5 text-xs gap-1.5"
+              >
+                <DynamicIcon name="RefreshCw" size={13} className={loadingRuns ? 'animate-spin' : ''} />
+                <span>Refresh Logs</span>
+              </ModernButton>
+            </div>
+
+            {/* List */}
+            {loadingRuns && runs.length === 0 ? (
+              <div className="py-16 text-center text-xs text-slate-500 flex flex-col items-center justify-center gap-2">
+                <span className="h-5 w-5 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
+                <span>Fetching execution runs...</span>
+              </div>
+            ) : runs.length === 0 ? (
+              <GlassCard className="py-12 text-center text-xs text-slate-500 border border-white/5">
+                No automation logs recorded yet. Trigger a workflow by inserting database rows.
+              </GlassCard>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {runs.map((run) => {
+                  const isExpanded = expandedRunId === run.id;
+                  const logs = run.logs || [];
+                  const dateStr = new Date(run.createdAt).toLocaleString();
+                  const isCompleted = run.status === 'COMPLETED';
+
+                  return (
+                    <GlassCard key={run.id} className="p-0 border border-white/5 overflow-hidden transition-all duration-300">
+                      {/* Summary Row */}
+                      <div 
+                        onClick={() => setExpandedRunId(isExpanded ? null : run.id)}
+                        className="p-5 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition"
+                      >
+                        <div className="flex items-center gap-4">
+                          {/* Status Indicator */}
+                          <div className={`h-8 w-8 rounded-lg flex items-center justify-center border ${
+                            isCompleted 
+                              ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
+                              : 'bg-rose-500/10 border-rose-500/20 text-rose-500'
+                          }`}>
+                            <DynamicIcon name={isCompleted ? 'CheckCircle2' : 'XCircle'} size={16} />
+                          </div>
+
+                          <div>
+                            <h4 className="text-xs font-bold text-white uppercase tracking-wider">{run.workflowName}</h4>
+                            <p className="text-[10px] text-slate-500 mt-0.5">Run ID: <span className="font-mono text-slate-400">{run.id.slice(0, 8)}</span> • {dateStr}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wide border ${
+                            isCompleted 
+                              ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-400' 
+                              : 'bg-rose-500/10 border-rose-500/25 text-rose-500'
+                          }`}>
+                            {run.status}
+                          </span>
+
+                          <DynamicIcon name={isExpanded ? 'ChevronUp' : 'ChevronDown'} size={16} className="text-slate-500" />
+                        </div>
+                      </div>
+
+                      {/* Expandable Step Logs */}
+                      {isExpanded && (
+                        <div className="px-5 pb-5 pt-1 border-t border-white/5 bg-slate-950/20 flex flex-col gap-3">
+                          <h5 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">Execution Steps</h5>
+                          
+                          {logs.length === 0 ? (
+                            <div className="text-[10px] text-slate-600 italic py-2">No step logs recorded for this execution.</div>
+                          ) : (
+                            <div className="flex flex-col gap-2.5">
+                              {logs.map((step: any, sIdx: number) => {
+                                const isStepSuccess = step.status === 'SUCCESS';
+                                const stepKey = `${run.id}-${step.stepId || sIdx}`;
+                                const isStepExpanded = expandedStepId === stepKey;
+
+                                return (
+                                  <div key={stepKey} className="border border-white/5 rounded-xl bg-[#0e1320] p-3 flex flex-col gap-2">
+                                    <div 
+                                      onClick={() => setExpandedStepId(isStepExpanded ? null : stepKey)}
+                                      className="flex items-center justify-between cursor-pointer"
+                                    >
+                                      <div className="flex items-center gap-2.5">
+                                        <div className={`h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold ${
+                                          isStepSuccess 
+                                            ? 'bg-emerald-500/10 text-emerald-400' 
+                                            : 'bg-rose-500/10 text-rose-500'
+                                        }`}>
+                                          {sIdx + 1}
+                                        </div>
+                                        <span className="text-xs font-bold text-white">{step.stepName}</span>
+                                        <span className="px-1.5 py-0.5 rounded bg-white/5 text-[9px] text-slate-400 uppercase font-mono">{step.status}</span>
+                                      </div>
+
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-[9px] text-slate-500">{new Date(step.timestamp).toLocaleTimeString()}</span>
+                                        <DynamicIcon name={isStepExpanded ? 'ChevronUp' : 'ChevronDown'} size={14} className="text-slate-500" />
+                                      </div>
+                                    </div>
+
+                                    {/* Expanded Step details */}
+                                    {isStepExpanded && (
+                                      <div className="border-t border-white/5 pt-3 mt-1 flex flex-col gap-3">
+                                        {step.input && (
+                                          <div className="flex flex-col gap-1">
+                                            <span className="text-[9px] font-bold text-slate-400 uppercase">Configuration Input:</span>
+                                            <pre className="bg-slate-950 p-2.5 rounded-lg border border-white/5 text-[10px] font-mono text-slate-300 overflow-x-auto max-h-40">
+                                              {JSON.stringify(step.input, null, 2)}
+                                            </pre>
+                                          </div>
+                                        )}
+                                        {step.output && (
+                                          <div className="flex flex-col gap-1">
+                                            <span className="text-[9px] font-bold text-slate-400 uppercase">Result Output:</span>
+                                            <pre className="bg-slate-950 p-2.5 rounded-lg border border-white/5 text-[10px] font-mono text-slate-300 overflow-x-auto max-h-40">
+                                              {JSON.stringify(step.output, null, 2)}
+                                            </pre>
+                                          </div>
+                                        )}
+                                        {step.error && (
+                                          <div className="flex flex-col gap-1">
+                                            <span className="text-[9px] font-bold text-rose-400 uppercase">Error Trace:</span>
+                                            <div className="bg-rose-950/20 border border-rose-500/20 p-2.5 rounded-lg text-[10px] font-mono text-rose-300">
+                                              {step.error}
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </GlassCard>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         )}
 
       </main>

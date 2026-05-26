@@ -210,6 +210,25 @@ export class AiGateway {
     }
   }
 
+  async generateText(prompt: string): Promise<string> {
+    if (!this.ai) {
+      return `[Offline Mock Text Response for: "${prompt.slice(0, 30)}..."]`;
+    }
+
+    try {
+      const model = this.ai.getGenerativeModel({
+        model: 'gemini-1.5-flash',
+      });
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      return text || '';
+    } catch (error) {
+      console.error("Gemini Text Generation failed:", error);
+      return `[Error generating text: fallback mock text]`;
+    }
+  }
+
+
   /**
    * Mock generation for offline support or missing API keys.
    */
